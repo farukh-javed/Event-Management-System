@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>EMS</title>
+</head>
+
+<body>
+    <header>
+        <h1>Event Management System</h1>
+    </header>
+
+    <nav>
+        {% if not session.logged_in %}
+            <a href="{{ url_for('login') }}">Login</a>
+        {% else %}
+            <div class="logout-container">
+                <button class="logout-btn" onclick="window.location.href='/logout'">&#128274; Logout</button>
+            </div>
+        {% endif %}
+    </nav>
+
+    {% if events %}
+        {% for event in events %}
+        <section class="event-details">
+            <p><strong>Name:</strong> {{ event['EventName'] }}</p>
+            <p><strong>Date:</strong> {{ event['EventDate'] }}</p>
+            <p><strong>Time:</strong> {{ event['StartTime'] }} - {{ event['EndTime'] }}</p>
+            <p><strong>Description:</strong> {{ event['Description'] }}</p>
+            <p><strong>Status:</strong> {{ event['Status'] }}</p>
+            <p><strong>Budget:</strong> ${{ event['Budget'] }}</p>
+        </section>
+        {% endfor %}
+
+        <a href="{{ url_for('event_details', event_id=events[0]['EventID']) }}">View Detailed Event Information</a>
+    {% else %}
+        <p>No events available</p>
+    {% endif %}
+</body>
+
+</html>
